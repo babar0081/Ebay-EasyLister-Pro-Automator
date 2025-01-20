@@ -77,12 +77,15 @@ def modify_html_file():
         # Proceed with modifying the HTML content as before
         # ... [Rest of your content modifications] ...
 
+
         # Replace heading
-        heading_pattern = r'(<div\s+style="font-family: &quot;Times New Roman&quot;[^>]*?>[\s\S]*?<font size="4">)([\s\S]*?)(</font>)'
+        # Updated heading pattern to match the new structure
+        # Replace heading
+        heading_pattern = r'(<div class="ReviewRightDescriptionLeft"\s+style="font-family: &quot;Times New Roman&quot;[^>]*?>[\s\S]*?<font size="4">)([\s\S]*?)(</font>)'
         content = re.sub(heading_pattern, f'\\1\n{heading}\n\\3', content)
 
         # Replace description points
-        ul_start = content.find('<ul>')
+        ul_start = content.find('<ul class="DescritionsPointsUL">')
         if ul_start != -1:
             ul_end = content.find('</ul>', ul_start)
             li_content = '\n'.join([f'''
@@ -91,7 +94,7 @@ def modify_html_file():
                   {point}
                 </font>
               </li>''' for point in processed_points])
-            content = content[:ul_start + 4] + li_content + content[ul_end:]
+            content = content[:ul_start + len('<ul class="DescritionsPointsUL">')] + li_content + content[ul_end:]
 
         # Handle image links and remove unused image elements
         for i in range(1, 5):
